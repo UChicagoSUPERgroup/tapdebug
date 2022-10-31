@@ -1,0 +1,90 @@
+<div class="nav">
+  <div class="back" (click)="this.goBack()">←</div>
+  <h1>Device/Capability Selection</h1>
+  <mat-icon>location_on</mat-icon>
+</div>
+
+<div class="ruleoption">
+  <span>Choose a device's action that you want to automate differently</span>
+</div>
+
+<ng-container class="row align-items-center justify-content-center h-100" *ngIf="showSpinner">
+  <div class="col-3">
+      <mat-spinner></mat-spinner>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!showSpinner">
+  <div class="panels">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight">
+          <mat-panel-title>
+            Step 1: Which room (zone) is the device located in?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="container">
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let zone of this.selectableZones; let i = index" 
+              (click)="gotoDeviceSelector(zone)">
+            <div class="channelBlock">
+              <div class="Inner">
+                <div class="Name">{{zone.name}}</div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+  
+      <mat-expansion-panel [expanded]="step === 2" [disabled]="enabledStep < 2" (opened)="setStep(2)">
+        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight">
+          <mat-panel-title>
+            Step 2: Which device should be automated differently?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="container">
+          <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let device of this.selectableDevices; let i = index" 
+            (click)="gotoDashboard(device)">
+            <div class="channelBlock">
+              <div class="Inner">
+                <div class="Name">{{(device.name)}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+  
+      <mat-expansion-panel [expanded]="step === 3" [disabled]="enabledStep < 3" (opened)="setStep(3)">
+        <mat-expansion-panel-header [collapsedHeight]="collapsedHeight">
+          <mat-panel-title>
+            <ng-container>Step 3: How would you like to modify the device's current behavior?</ng-container>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-container *ngIf="step === 3">
+          <ng-container>
+            <mat-radio-group class="nf-choices-group" aria-labelledby="example-radio-group-label" [(ngModel)]="this.stmtSelection">
+              <ng-container *ngFor="let command of this.currentCommands; let c_i=index">
+                <mat-radio-button class="nf-choices" [value]="c_i+',fp'">I would like the action "<span class="actionemph">{{command.text}}</span>" to not automatically happen under certain contexts.</mat-radio-button>
+                <mat-radio-button class="nf-choices" [value]="c_i+',fn'">I would like the action "<span class="actionemph">{{command.text}}</span>" to automatically happen under more contexts.</mat-radio-button>
+              </ng-container>
+            </mat-radio-group>
+            <button mat-raised-button (click)="submitSelection()" [disabled]="this.fetchingViz" class='addnew'>Submit</button>
+
+          </ng-container>
+        </ng-container>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</ng-container>
+
+<!-- <div class="container">
+  <ng-container *ngIf="!showSpinner">
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let zone of this.selectableZones; let i = index" 
+        (click)="this.rsiService.gotoDeviceSelector(zone)">
+      <div class="channelBlock">
+        <div class="Inner">
+          <div class="Name">{{zone.name}}</div> 
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div> -->

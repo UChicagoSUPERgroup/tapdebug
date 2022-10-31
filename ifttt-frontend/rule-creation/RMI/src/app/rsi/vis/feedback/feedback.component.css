@@ -1,0 +1,41 @@
+mat-list-item {
+    height: 70px !important;
+}
+
+mat-line {
+    height: auto !important;
+}
+
+.t1 {
+    line-height: 80px !important;
+    font-size: 32px !important;
+}
+
+.t2 {
+    line-height: 35px !important;
+    font-size: 20px !important;
+    margin: 10px; 
+}
+
+.inactive {
+    /* background-color: lightgray; */
+    color: lightgray;
+    cursor: not-allowed !important;
+}
+
+button.dismiss {
+    float: right;
+    background-color: rgb(218, 218, 218);
+}
+
+button.submit {
+    background-color: rgb(218, 218, 218);
+}
+
+button.dismiss:focus {
+    outline: none;
+}
+
+button:hover {
+    background-color: rgb(255, 255, 255);
+}

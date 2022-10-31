@@ -1,0 +1,62 @@
+<div class="nav">
+  <h1>Tutorial {{taskid}}</h1>
+</div>
+
+<div class="container">
+  <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+      <ng-container *ngFor="let page of pages">
+        <mat-step [stepControl]="page.title">
+          <ng-template matStepLabel>{{page.title}}</ng-template>
+          <div *ngIf="page.image">
+            <img class="tutorial-image" [src]="'/assets/'+page.image">
+          </div>
+          <p>{{page.text}}</p>
+
+          <mat-list *ngIf="page.showrules">
+            <mat-list-item class="rule-display" *ngFor="let rule of RULES; let i = index">
+              <div class="rule-blocks">
+                <table class="rule-table">
+                  <tr class="rule-table" *ngFor="let word of rule.words; let i = index">
+                    <td class="rule-word rule-table">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+                    <td class="rule-content rule-table">{{rule.descriptions[i]}}</td>
+                  </tr>
+                </table>
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+          <div>
+            <button mat-button matStepperPrevious [disabled]="page.position==0">Prev</button>
+            <button mat-button [disabled]="(!allowProceed && page.needcondition) || page.position==pages.length-1" matStepperNext>Next</button>
+          </div>
+        </mat-step>
+      </ng-container>
+      <!-- <mat-step [stepControl]="moveToLoc">
+          <ng-template matStepLabel>Move</ng-template>
+          <div>
+            <img class="tutorial-image" src="/assets/tutorial1-minimap.PNG">
+          </div>
+          <p>Please move to zone F (garage).</p>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+      </mat-step>
+      <mat-step [stepControl]="interactWithDev">
+        <ng-template matStepLabel>Interact</ng-template>
+        <div>
+          <img class="tutorial-image" src="/assets/tutorial1-button.PNG">
+        </div>
+        <p>Left-click up arrow of the button shown in the image to open the garage door.</p>
+        <p>Note: you'll need to fully open the garage door in Home I/O to proceed.</p>
+        <div>
+          <button mat-button matStepperPrevious>Prev</button>
+          <button mat-button [disabled]="!allowProceed" matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step [stepControl]="finish" *ngIf="allowProceed">
+          <ng-template matStepLabel>Finish</ng-template>
+          
+          Well done! You can safely close this tab and go back to the survey tab now!
+      </mat-step> -->
+  </mat-horizontal-stepper>
+</div>

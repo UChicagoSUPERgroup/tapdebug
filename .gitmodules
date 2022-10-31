@@ -1,0 +1,9 @@
+[submodule "iot-tap-backend"]
+	path = iot-tap-backend
+	url = ../iot-tap-backend.git
+[submodule "iot-autotap"]
+	path = iot-autotap
+	url = ../iot-autotap.git
+[submodule "ifttt-frontend"]
+	path = ifttt-frontend
+	url = ../ifttt-frontend.git

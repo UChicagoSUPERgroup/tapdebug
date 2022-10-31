@@ -1,0 +1,24 @@
+<div class="outer">
+  <div class="nav">
+    <div class="back" (click)="goToDashboard()">←</div>
+    <mat-icon>assignment</mat-icon>
+    <div class="title">
+      <h1>Visualization</h1>
+    </div>
+    <div class="newrule">
+    </div>
+  </div>
+
+  <div class="spincontainer" *ngIf="showSpinner">
+    <div class="row align-items-center justify-content-center h-100">
+      <div class="col-6">
+        <mat-spinner class="helptext-spinner"></mat-spinner>
+        <div class="helptext">It might take several minutes to fetch the trace.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div [hidden]="showSpinner">
+    <template #vis></template>
+  </div>
+</div>

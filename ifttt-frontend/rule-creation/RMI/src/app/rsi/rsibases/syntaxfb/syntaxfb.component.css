@@ -1,0 +1,31 @@
+mat-list-item {
+    height: 70px !important;
+}
+
+mat-line {
+    height: auto !important;
+}
+
+.t1 {
+    line-height: 80px !important;
+    font-size: 32px !important;
+}
+
+.t2 {
+    line-height: 35px !important;
+    font-size: 20px !important;
+}
+
+.inactive {
+    /* background-color: lightgray; */
+    color: lightgray;
+    cursor: not-allowed !important;
+}
+
+button.dismiss {
+    float: right;
+}
+
+button.dismiss:focus {
+    outline: none;
+}

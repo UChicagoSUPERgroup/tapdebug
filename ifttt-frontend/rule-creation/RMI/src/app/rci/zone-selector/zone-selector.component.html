@@ -1,0 +1,16 @@
+<div class="nav">
+  <div class="back" (click)="this._location.back()">←</div>
+  <h1>Select a Zone</h1>
+  <mat-icon>location_on</mat-icon>
+</div>
+
+<div class="container">
+  <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let zone of this.selectableZones; let i = index" 
+        (click)="this.userDataService.gotoDeviceSelector(zone)">
+    <div class="channelBlock">
+      <div class="Inner">
+        <div class="Name">{{zone.name}}</div> 
+      </div>
+    </div>
+  </div>
+</div>

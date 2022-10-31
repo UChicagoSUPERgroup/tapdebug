@@ -1,0 +1,37 @@
+<div class="nav">
+  <div class="back" (click)="this.goBack()">←</div>
+  <h1>Choices Selection</h1>
+
+  <!--Modified it so that finish button will appear not only based on *existence* of FP array (auto rules) but also FN array (green space); Will make finish button functional.-->
+  <button *ngIf="this.rsiService.currentFPFeedbacks.size || this.rsiService.currentFNFeedbacks.length"  (click)="readModificationVariable()" mat-raised-button>Finish</button>
+</div>
+
+<div class="spincontainer" *ngIf="showSpinner">
+  <div class="row align-items-center justify-content-center h-100">
+    <div class="col-6">
+      <mat-spinner class="helptext-spinner"></mat-spinner>
+      <div class="helptext">It might take several minutes to render things that can be modified.</div>
+    </div>
+  </div>
+</div>
+
+<div [hidden]="showSpinner">
+  <div class="ruleoption">
+    <span>For "{{getCurrentCommandText()}}" , what modification should happen?</span>
+  </div>
+  
+  <div class="container">
+    <mat-card (click)="openDialog(devv, cmd, 1)">
+      <mat-card-title>Sometimes it should've happened automatically.</mat-card-title>
+    </mat-card>
+  
+    <mat-card (click)="openDialog(devv, cmd, 2)">
+      <mat-card-title>Sometimes it shouldn't have happened.</mat-card-title>
+    </mat-card>
+  
+    <!-- <mat-card (click)="openDialog(devv, cmd, 3)">
+      <mat-card-title>Some action should've happened at a different time.</mat-card-title>
+    </mat-card> -->
+  </div>
+</div>
+

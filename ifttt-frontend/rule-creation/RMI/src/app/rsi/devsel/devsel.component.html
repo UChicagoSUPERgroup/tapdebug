@@ -1,0 +1,20 @@
+<div class="nav">
+  <div class="back" (click)="this.goBack()">←</div>
+  <h1>Device/Capability Selection</h1>
+  <mat-icon>settings_input_antenna</mat-icon>
+</div>
+
+<div class="ruleoption">
+  <span>Choose the zone & device whose automation you want to change:</span>
+</div>
+
+<div class="container">
+  <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2" *ngFor="let device of this.selectableDevices; let i = index" 
+        (click)="this.rsiService.gotoDashboard(device)">
+    <div class="channelBlock">
+      <div class="Inner">
+        <div class="Name">{{(device.name)}}</div>
+      </div>
+    </div>
+  </div>
+</div>

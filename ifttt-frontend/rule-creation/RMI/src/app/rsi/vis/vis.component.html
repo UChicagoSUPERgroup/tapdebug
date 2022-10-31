@@ -1,0 +1,86 @@
+<div id='vis'>
+  
+  <div class="stat">
+    <ng-container *ngIf="!mode">
+      You manually applied "<span class="statevent">{{currentCommandText}}</span>" 
+      <span class="stattimes">{{traceLogsFN.length}} {{traceLogsFN.length==1?"time":"times"}}</span>.
+    </ng-container>
+    <ng-container *ngIf="mode">
+      You suggested <span class="stattimes">{{traceLogsFN.length}} time {{traceLogsFN.length==1?"point":"points"}}</span> 
+      when "<span class="statevent">{{currentCommandText}}</span>" should've happened.
+    </ng-container>
+  </div>
+  <button mat-button class="btn-show-alter-flip" (click)="flipFNFixed()">
+    <ng-container *ngIf="!showFNFixed">
+      <mat-icon class="showorhideicon">expand_more</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="showFNFixed">
+      <mat-icon class="showorhideicon">expand_less</mat-icon>
+    </ng-container>
+
+    The suggested patch would automate 
+    <span class="stattimes">{{patchMeta.FN_fixed}} {{patchMeta.FN_fixed==1?"time":"times"}}</span> 
+    out of them.
+  </button>
+
+  <template #visfnfixed></template>
+
+  <button mat-button class="btn-show-alter-flip" (click)="flipNewIntroduced()">
+    <ng-container *ngIf="!showNewIntroduced">
+      <mat-icon class="showorhideicon">expand_more</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="showNewIntroduced">
+      <mat-icon class="showorhideicon">expand_less</mat-icon>
+    </ng-container>
+
+    The suggested patch would also trigger 
+    <span class="stattimes">{{patchMeta.new_introduced}} additional automated {{patchMeta.new_introduced==1?"action":"actions"}}</span>.
+  </button>
+
+  <template #visnewintroduced></template>
+
+  <div class="stat">
+    <ng-container *ngIf="!mode">
+      You reverted the automation "<span class="statevent">{{currentCommandText}}</span>" 
+      <span class="stattimes">{{nRevert}} {{nRevert==1?"time":"times"}}</span>.
+    </ng-container>
+    <ng-container *ngIf="mode">
+      You suggested that the automation "<span class="statevent">{{currentCommandText}}</span>" shouldn't have 
+      happened in <span class="stattimes">{{nRevert}} {{nRevert==1?"time":"times"}}</span>.
+    </ng-container>
+  </div>
+
+  <button mat-button class="btn-show-alter-flip" (click)="flipFPFixed()">
+    <ng-container *ngIf="!showFPFixed">
+      <mat-icon class="showorhideicon">expand_more</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="showFPFixed">
+      <mat-icon class="showorhideicon">expand_less</mat-icon>
+    </ng-container>
+
+    The suggested patch would successfully cancel the automation in 
+    <span class="stattimes">{{patchMeta.FP_fixed}} {{patchMeta.FP_fixed==1?"case":"cases"}}</span> 
+    out of them.
+  </button>
+
+  <template #visfpfixed></template>
+
+  <button mat-button class="btn-show-alter-flip" (click)="flipTPCancelled()">
+    <ng-container *ngIf="!showTPCancelled">
+      <mat-icon class="showorhideicon">expand_more</mat-icon>
+    </ng-container>
+    <ng-container *ngIf="showTPCancelled">
+      <mat-icon class="showorhideicon">expand_less</mat-icon>
+    </ng-container>
+
+    The suggested patch would also cancel 
+    <span class="stattimes">{{patchMeta.TP_cancelled}} additional automated {{patchMeta.TP_cancelled==1?"action":"actions"}}</span>.
+  </button>
+
+  <template #vistpcancelled></template>
+
+</div>
+
+<button mat-mini-fab class="help" (click)="openLegend()" *ngIf="showFNFixed || showFPFixed || showTPCancelled || showNewIntroduced">
+  <mat-icon>help_outline</mat-icon>
+</button>

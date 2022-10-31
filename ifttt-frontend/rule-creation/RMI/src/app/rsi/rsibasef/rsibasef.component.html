@@ -1,0 +1,35 @@
+<div class="outer">
+  <div class="nav">
+    <div class="back" (click)="this.backToOptions()">←</div>
+    <mat-icon>assignment</mat-icon>
+    <div class="title">
+      <h1> Action: {{getCurrentCommandText()}}</h1>
+    </div>
+    <div class="newrule">
+    </div> 
+    <button mat-button class="currentrule" (click)="openDialog()">Show Current Rules</button>
+    <button mat-raised-button (click)="finishFeedback()">Finish</button>
+  </div>
+
+  <div class="spincontainer" *ngIf="showSpinner">
+    <div class="row align-items-center justify-content-center h-100">
+      <div class="col-6">
+        <mat-spinner class="helptext-spinner"></mat-spinner>
+        <div class="helptext">It might take several minutes to render rules and visualizations.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div [hidden]="showSpinner">
+    <div class="vis">
+      <div class="ruleoption">
+        <!-- <span>Click on the green column to tell us what went wrong. Click on finish to see suggested modifications based on your feedback.</span> -->
+        <span *ngIf="rsiService.modification == 1">Click on the green column to tell when there should've been automations.</span>
+        <span *ngIf="rsiService.modification == 2">Click on automated events in the green column that shouldn't have happened.</span>
+        <span *ngIf="rsiService.modification == 3">Move the automated events to indicate it should've happened at a different time.</span>
+      </div>
+      <template #viscontainer></template>
+    </div>
+  </div>
+      
+</div>

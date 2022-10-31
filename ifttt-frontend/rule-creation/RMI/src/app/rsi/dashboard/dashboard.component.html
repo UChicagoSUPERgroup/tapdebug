@@ -1,0 +1,67 @@
+<div class="nav">
+    <div class="back" (click)="this.goBack()">←</div>
+    <h1>Device/Capability Selection</h1>
+</div>
+
+<div class="ruleoption">
+  <span>Choose the automation for "{{device.name}}" to be modified:</span>
+</div>
+
+<div class="container">
+  <div>
+    <div *ngIf="device.commands.length > 0">
+      <h2>{{device.label}}</h2>
+      <div *ngFor="let capability_parameter of getDeviceCommandCapabilities(device)">
+        <h4>{{getDefaultTextForCapability(capability_parameter[0], capability_parameter[1])}}</h4>
+        <div class="row">
+          <ng-container *ngFor="let command of getCommandFromCapability(device, capability_parameter[0])">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6" *ngIf="command.count>0 || command.reverted>0">
+              
+              <ng-container *ngIf="this.rsiService.showCommand(command.count, command.covered, command.reverted, this.userDataService.mode)">
+                
+                <mat-card (click)="openDialog(device, command)">
+                  <mat-card-title>
+                    <ng-container *ngIf="command.parameter.type=='color'">
+                      <div class="dot" [ngStyle]="{'background-color': command.value}"></div>
+                    </ng-container>
+                    {{command.value}}
+                  </mat-card-title>
+                  <!-- {{command.count-command.covered}} actions could be automated.
+                  <br>
+                  <ng-container *ngIf="command.reverted>0">
+                    {{command.reverted}} automations reverted.
+                  </ng-container> -->
+                  
+                </mat-card>
+                
+              </ng-container>
+
+
+              <ng-container *ngIf="!(this.rsiService.showCommand(command.count, command.covered, command.reverted, this.userDataService.mode))">
+                <mat-card class="inactivecard">
+                  <mat-card-title>
+                    <ng-container *ngIf="command.parameter.type=='color'">
+                      <div class="dot" [ngStyle]="{'background-color': command.value}"></div>
+                    </ng-container>
+                    {{command.value}}
+                  </mat-card-title>
+                  <!-- {{command.count-command.covered}} actions could be automated.
+                  <br>
+                  <ng-container *ngIf="command.reverted>0">
+                    {{command.reverted}} automations reverted.
+                  </ng-container> -->
+                </mat-card>
+              </ng-container>
+              
+            </div>
+          </ng-container>
+          
+        </div>
+      </div>
+      <br>
+    </div>
+    <!-- <u class="editrule" (click)="gotoCreate()">Manually edit rules</u> -->
+  </div>
+</div>
+  <!-- </mat-sidenav-content> -->
+<!-- <mat-sidenav-container> -->

@@ -1,0 +1,170 @@
+<ng-container *ngIf="token == 'task1_daytime'">
+  <ul>
+    <li>
+      Sit in the home office (Zone N) from 10am to 4pm. During the period, finish the following tasks:
+      <ul>
+        <li>
+          Visit the restroom downstairs once in the morning, once in the evening. Each time, stay in the restroom for 10 minutes and go back to the home office.
+        </li>
+        <li>
+          Have a lunch break at 12:30pm. Stay in the dining room (Zone D) for 30 minutes. Go back to the home office afterwards.
+        </li>
+      </ul>
+    </li>
+    <li class="emph">
+      During the whole period. Make sure the lights are only turned on when dark. It shouldn't be turned on when it's already bright.
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task1_nighttime'">
+  <ul>
+    <li>
+      Sit in the home office (Zone N) from 8pm to 10pm. During the period, finish the following tasks:
+      <ul>
+        <li>
+          Visit the restroom downstairs once.
+        </li>
+      </ul>
+    </li>
+    <li class="emph">
+      During the whole period. Make sure the lights are only turned on when dark. It shouldn't be turned on when it's already bright.
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task3_sleep'">
+  <ul>
+    <li>
+      Finish the following tasks before going to sleep:
+      <ul>
+        <li>
+          Visit every other room on the first floor to make sure all lights have been turned off.
+        </li>
+        <li>
+          Visit the bathroom (Zone K) to do the necessary washing before going to bed. Stay in Zone K for 30 minutes.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Then, go to bed in Zone L.
+    </li>
+    <li class="emph">
+      Make sure that the door is closed. The light is off. The shade is closed.
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task3_read'">
+  <ul>
+    <li>
+      Stay in the bedroom from 1pm to 6pm. During the period, finish the following task:
+      <ul>
+        <li>
+          Visit the bathroom once. Stay in the bathroom for 10 minutes.
+        </li>
+      </ul>
+    </li>
+    <li class="emph">
+      During the whole period. Make sure there are ample lights for reading. When it's really dark. Please either open the shade or turn on the light.
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task4_read'">
+  <ul>
+    <li>
+      Sit in the home office (Zone N) from 11am to 7pm. During the period, finish the following tasks:
+      <ul>
+        <li>
+          Have a lunch break at 12:30pm. Stay in the dining room (Zone D) for 30 minutes. Go back to the home office afterwards.
+        </li>
+      </ul>
+    </li>
+    <li class="emph">
+      During the whole period. Make sure there are ample lights for reading. When it's really dark. Please either open the shade or turn on the light.
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task6_weekday'">
+  <ul>
+    <li>
+      Please finish the following tasks:
+      <ul>
+        <li>
+          Stay in the dining room (Zone D) for 30 minutes for breakfast.
+        </li>
+        <li>
+          Leave the house through the garage (Zone F). Stay outside until 6pm.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Go back to the house. Enter through the garage (Zone F).
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task6_weekend'">
+  <ul>
+    <li>
+      Please finish the following tasks:
+      <ul>
+        <li>
+          Stand under an open garage gate (Zone F) for 10 minutes, assuming you are waiting for the family.
+        </li>
+        <li>
+          Leave the house through the garage (Zone F). Stay outside until 1pm.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Go back to the house. Enter through the garage (Zone F). Pay attention to the garage. 
+    </li>
+    <li class="emph">
+      Has it automatically closed?
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task12_regular'">
+  <ul>
+    <li>
+      Enter the house through the entrance gate. Finish the following tasks:
+      <ul>
+        <li>
+          Stay in the dining room for 1 hour for dinner.
+        </li>
+        <li>
+          Stay in the bathroom (Zone K) for 30 minutes for necessary washing before going asleep.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Sleep until 8am in the morning.
+    </li>
+    <li class="emph">
+      Check the entrance gate. Has it successfully closed?
+    </li>
+  </ul>
+</ng-container>
+
+<ng-container *ngIf="token == 'task12_late'">
+  <ul>
+    <li>
+      Enter the house through the entrance gate. Finish the following tasks:
+      <ul>
+        <li>
+          Stay in the bathroom (Zone K) for 30 minutes for necessary washing before going asleep.
+        </li>
+      </ul>
+    </li>
+    <li>
+      Sleep until 8am in the morning.
+    </li>
+    <li class="emph">
+      Check the entrance gate. Has it successfully closed?
+    </li>
+  </ul>
+</ng-container>

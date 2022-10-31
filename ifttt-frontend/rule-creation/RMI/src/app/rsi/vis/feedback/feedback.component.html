@@ -1,0 +1,27 @@
+<ng-container *ngIf="currentMode">
+  <div class="t1">At {{rsiService.currentFeedbackTime | date : 'h:mm:ss a, MMM d'}}, what should have happened?</div>
+  <mat-nav-list>
+    <mat-list-item>
+          {{shouldHappenText}} <input type = "checkbox" class="t2"> 
+    </mat-list-item>
+  </mat-nav-list>
+</ng-container>
+<ng-container *ngIf="!currentMode">
+  <div *ngIf="readModificationVariable()==2" class="t1">Confirm action "{{shouldHappenText}}" at {{rsiService.currentTimeStr | date : 'h:mm a, MMM d'}} shouldn't have happened.</div>
+  <div *ngIf="readModificationVariable()==3" class="t1">Confirm action "{{shouldHappenText}}" at {{rsiService.currentTimeStr | date : 'h:mm a, MMM d'}} should've happened at a different time.</div>
+  <!--<div class="t1">What should be changed for the action "{{shouldHappenText}}" at {{rsiService.currentTimeStr | date : 'h:mm a, MMM d'}}</div>
+  <mat-nav-list>
+    <mat-list-item>
+      <span> It shouldn't have happened.</span>
+      <input type = "checkbox" class="t2"> 
+    </mat-list-item>
+    <mat-list-item>
+        <span> It should've happened at a different time.</span> 
+        <input type = "checkbox" class="t2"> 
+    </mat-list-item>
+  </mat-nav-list>
+-->
+</ng-container>
+
+<button mat-raised-button class="submit" (click)="save()">Submit</button>
+<button mat-raised-button class="dismiss" (click)="dismiss()">Dismiss</button>

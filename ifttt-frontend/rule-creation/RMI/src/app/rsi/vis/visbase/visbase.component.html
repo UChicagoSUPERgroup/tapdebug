@@ -1,0 +1,119 @@
+<ng-container *ngIf="this.rsiService.modification == 1">
+ <ng-container *ngFor="let fnfb of this.rsiService.currentFNFeedbacks; let i=index">
+  <div class="existingfb" [style.top]="fnfb.top" [style.left]="fnfb.left" (click)="this.rsiService.removeFNFeedback(i)">
+    &#9889;{{targetValue}}
+  </div>
+ </ng-container>
+</ng-container>
+
+
+<ng-container *ngIf="display">
+  <table>
+    <thead>
+      <tr>
+        <th><div class="tablehead">
+          <!-- <p class="tab-dev-name text-truncate" data-toggle="tooltip" data-placement="bottom">TIME</p> -->
+          <!-- <div class="tab-dev-name">{{getDateTimeFormat(trace.time_list[0].time)[1] | date:"MMMM d"}}</div> -->
+        </div></th>
+        <th>
+          <div class="tablehead">
+            <img src="{{getDeviceImg(devList[targetId])}}" class="rounded mx-auto d-block img-thumbnail tab-dev-pic">
+            <ng-container *ngFor="let desc of enhancedDevList[targetId]">
+              <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+              <ng-container *ngIf="desc[0]==''">
+                <p class="tab-dev-name text-truncate" data-toggle="tooltip" data-placement="bottom" title="{{devList[targetId]}}">{{devList[targetId]}}</p>
+              </ng-container>
+            </ng-container>
+            <p class="tab-cap-name">{{capList[targetId]}}</p>
+          </div>
+        </th>
+        <th *ngFor="let d_i of tapSensorList[currentCluster]">
+          <div class="tablehead">
+            <img src="{{getDeviceImg(devList[d_i])}}" class="rounded mx-auto d-block img-thumbnail tab-dev-pic">
+            <ng-container *ngFor="let desc of enhancedDevList[d_i]">
+              <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+              <ng-container *ngIf="desc[0]==''">
+                <p class="tab-dev-name text-truncate" data-toggle="tooltip" data-placement="bottom" title="{{devList[d_i]}}">{{devList[d_i]}}</p>
+              </ng-container>
+            </ng-container>
+            <p class="tab-cap-name">{{capList[d_i]}}</p>
+          </div>
+        </th>
+        <th *ngFor="let d_i of unrelated_devices_index">
+          <div class="tablehead">
+            <img src="{{getDeviceImg(devList[d_i])}}" class="rounded mx-auto d-block img-thumbnail tab-dev-pic">
+            <ng-container *ngFor="let desc of enhancedDevList[d_i]">
+              <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+              <ng-container *ngIf="desc[0]==''">
+                <p class="tab-dev-name text-truncate" data-toggle="tooltip" data-placement="bottom" title="{{devList[d_i]}}">{{devList[d_i]}}</p>
+              </ng-container>
+            </ng-container>
+            <p class="tab-cap-name">{{capList[d_i]}}</p>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let trace of traceLogs; let j = index">
+        <ng-container *ngIf="maskList[j]">
+          <tr>
+            <td><div class="tabletimedate">{{getDateTimeFormat(trace.time_list[1].time)[1] | date:"MMMM d":"+0000"}}</div></td>
+            <td class="init_target_column">
+              <vis-status [value]="trace.time_list[0].current_typ_vals[targetId]" [mode]="mode" [currentCluster]="currentCluster"></vis-status>
+            </td>
+            <td class="init_related_column" *ngFor="let value_i of tapSensorList[currentCluster]">
+              <vis-status [value]="trace.time_list[0].current_typ_vals[value_i]" [mode]="mode" [currentCluster]="currentCluster"></vis-status>
+            </td>
+            <td class="init_other_column" *ngFor="let value_i of unrelated_devices_index">
+              <vis-status [value]="trace.time_list[0].current_typ_vals[value_i]" [mode]="mode" [currentCluster]="currentCluster"></vis-status>
+            </td>
+          </tr>
+          <tr *ngFor="let status of trace.time_list.slice(1); let s_i = index">
+            <td>
+              <ng-container *ngIf="!getDateTimeFormat(status.time)[0]">
+                <div class="tabletime">{{getDateTimeFormat(status.time)[1] | date:"hh:mmaa":"+0000"}}</div>
+              </ng-container>
+              <ng-container *ngIf="getDateTimeFormat(status.time)[0]">
+                <div class="tabletimebold">{{getDateTimeFormat(status.time)[1] | date:"hh:mmaa":"+0000"}}</div>
+              </ng-container>
+            </td>
+            <ng-container *ngIf="allowFeedback">
+              <td *ngIf="this.rsiService.modification == 1" class="target_column_feedback addpointer" (click)="feedbackFN($event, j, s_i+1)">
+                <vis-status [value]="status.current_typ_vals[targetId]" [mode]="mode" [currentCluster]="currentCluster" [logId]="j" [timeStr]="status.time" [allowFeedback]="true" [height]="this.entryHeights[j][s_i+1]"></vis-status>
+                <div class="fbtext">&#9889;{{targetValue}}</div>
+              </td>
+              <td *ngIf="this.rsiService.modification != 1" class="target_column_feedback removepointer" (click)="feedbackFN($event, j, s_i+1)">
+                <vis-status [value]="status.current_typ_vals[targetId]" [mode]="mode" [currentCluster]="currentCluster" [logId]="j" [timeStr]="status.time" [allowFeedback]="true" [height]="this.entryHeights[j][s_i+1]"></vis-status>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="!allowFeedback">
+              <td class="target_column">
+                <vis-status [value]="status.current_typ_vals[targetId]" [mode]="mode" [currentCluster]="currentCluster" [height]="this.entryHeights[j][s_i+1]"></vis-status>
+              </td>
+            </ng-container>
+            <td class="related_column" *ngFor="let value_i of tapSensorList[currentCluster]">
+              <vis-status [value]="status.current_typ_vals[value_i]" [mode]="mode" [currentCluster]="currentCluster" [height]="this.entryHeights[j][s_i+1]"></vis-status>
+            </td>
+            <td class="other_column" *ngFor="let value_i of unrelated_devices_index">
+              <vis-status [value]="status.current_typ_vals[value_i]" [mode]="mode" [currentCluster]="currentCluster" [height]="this.entryHeights[j][s_i+1]"></vis-status>
+            </td>
+          </tr>
+          <ng-container *ngIf="j!=getLastInMask(maskList)">
+            <tr>
+              <td></td>
+            </tr>
+            <tr>
+              <td><div class="centerdots">&#8942;</div></td>
+              <td><div class="centerdots">&#8942;</div></td>
+              <td *ngFor="let d_i of tapSensorList[currentCluster]"><div class="centerdots">&#8942;</div></td>
+              <td *ngFor="let d_i of unrelated_devices_index"><div class="centerdots">&#8942;</div></td>
+            </tr>
+            <tr>
+              <td></td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</ng-container>

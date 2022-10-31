@@ -1,0 +1,30 @@
+<div class="t1">Would you like to ...?</div>
+
+<mat-nav-list>
+  <ng-container *ngIf="rsiService.currentSyntaxMode == 0">
+    <mat-list-item (click)="finish()">
+      <span mat-line class="t2">Change the condition "{{rsiService.currentConditionText}}"</span>
+    </mat-list-item>
+    <ng-container *ngIf="rsiService.currentConditionValue">
+      <mat-list-item (click)="finish(true)">
+        <span mat-line class="t2">Change the value "{{rsiService.currentConditionValue}}"</span>
+      </mat-list-item>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="rsiService.currentSyntaxMode == 1">
+    <mat-list-item (click)="finish()">
+      <span mat-line class="t2">Add a new condition (constraint) to the rule</span>
+    </mat-list-item>
+  </ng-container>
+  
+  <ng-container *ngIf="rsiService.currentSyntaxMode == 2">
+    <mat-list-item (click)="finish()">
+      <span mat-line class="t2">Add a new rule</span>
+    </mat-list-item>
+  </ng-container>
+</mat-nav-list>
+
+<button mat-flat-button class="dismiss" (click)="dismiss()">Dismiss</button>
+
+

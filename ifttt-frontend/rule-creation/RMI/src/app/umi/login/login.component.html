@@ -1,0 +1,32 @@
+<div class="wrapper">
+    <div class="welcome container">
+        <div class="row align-items-center">
+            <div class="col-sm-8">
+                <div class="intro">
+                    <h1>Super IFTTT</h1>
+                </div>
+                <div class="sub-intro">
+                    <h4>Controlling Your Devices More Easily</h4>
+                    <p>(Hopefully this statement is true.)</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <mat-card class="login">
+                    <form [formGroup]="loginForm">
+                        <div class="row">
+                            <mat-form-field class="col-sm-12">
+                                <input matInput formControlName="login_token" (keyup.enter)="login()" type="password" placeholder="Token" required>
+                                <mat-error *ngIf="loginForm.hasError('required', 'login_token')">Token is required</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button mat-flat-button type="submit" [disabled]="!loginForm.valid" (click)="login()" class="primary-btn">Log In</button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="nav">
+  <h1>Task {{taskid}}</h1>
+</div>
+
+<div class="container">
+  <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper">
+      <ng-container *ngFor="let page of pages">
+        <mat-step [stepControl]="page.title">
+          <ng-template matStepLabel>{{page.title}}</ng-template>
+          <div *ngIf="page.image">
+            <img class="tutorial-image" [src]="'/assets/'+page.image">
+          </div>
+          <ng-container *ngFor="let tup of page.texts">
+            <ng-container *ngIf="tup[0]==''">{{tup[1]}}</ng-container>
+            <ng-container *ngIf="tup[0]=='rule'"><a (click)="showCurrentRules()">{{tup[1]}}</a></ng-container>
+            <ng-container *ngIf="tup[0]=='inst'"><a (click)="showInstructions(tup[1])">Text Instructions</a>.</ng-container>
+            <ng-container *ngIf="tup[0]=='it'"><i>{{tup[1]}}</i></ng-container>
+            <ng-container *ngIf="tup[0]=='b'"><b>{{tup[1]}}</b></ng-container>
+            <ng-container *ngIf="tup[0]=='br'"><br><br></ng-container>
+            <ng-container *ngIf="tup[0]=='load'"><span class="load">{{tup[1]}}</span></ng-container>
+            <ng-container *ngIf="tup[0]=='img'"><img class="tutorial-image" [src]="'/assets/'+tup[1]"></ng-container>
+            <ng-container *ngIf="tup[0]=='upload'">
+              <button mat-flat-button class="upload" *ngIf="!uploadClicked" (click)="uploadTrace()">{{tup[1]}}</button>
+              <button mat-flat-button disabled class="upload" *ngIf="uploadClicked">{{tup[1]}}</button>
+              <ng-container *ngIf="uploadClicked && !allowProceed">Uploading...Please do not click on anything within the page.</ng-container>
+              <ng-container *ngIf="uploadClicked && allowProceed">Upload finished</ng-container>
+            </ng-container>
+          </ng-container>
+          <!-- <p>{{page.text}}</p> -->
+          <br><br>
+          <a *ngIf="page.position==lastpos" (click)="gotoRulePage()">Modify my rules</a>
+
+          <mat-list *ngIf="page.showrules">
+            <mat-list-item class="rule-display" *ngFor="let rule of RULES; let i = index">
+              <div class="rule-blocks">
+                <table class="rule-table">
+                  <tr class="rule-table" *ngFor="let word of rule.words; let i = index">
+                    <td class="rule-word rule-table">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+                    <td class="rule-content rule-table">{{rule.descriptions[i]}}</td>
+                  </tr>
+                </table>
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+          <div>
+            <button mat-button matStepperPrevious [disabled]="page.position==firstpos">Prev</button>
+            <button mat-button [disabled]="(!allowProceed && page.needcondition) || page.position==lastpos" matStepperNext>Next</button>
+          </div>
+        </mat-step>
+      </ng-container>
+  </mat-horizontal-stepper>
+</div>

@@ -1,0 +1,15 @@
+<mat-list-item class="rule-display" *ngFor="let rule of RULES; let i = index">
+  <div class="rule-blocks">
+    <table class="rule-table">
+      <tr class="rule-table" *ngFor="let word of rule.words; let i = index">
+        <td class="rule-word rule-table">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+        <td class="rule-content rule-table">
+          <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+            <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+            <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+          </ng-container>
+        </td>
+      </tr>
+    </table>
+  </div>
+</mat-list-item>

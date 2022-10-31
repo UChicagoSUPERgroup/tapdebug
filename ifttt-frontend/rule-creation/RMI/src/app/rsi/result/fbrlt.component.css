@@ -1,0 +1,628 @@
+* {
+    font-family: Lato, sans-serif;
+    box-sizing: border-box;
+    font-family: Lato, sans-serif;
+  
+    --main-color: rgb(0, 153, 255);
+    --lighter-color: #ccebff;
+    --darker-color: #008ae6;
+    /* --main-color: #ff9933;
+      --darker-color: #ff8c1a; */
+  
+    --border-color: gray;
+    --list-border-color: lightgrey;
+  
+    --del-background: #ffeef0;
+    --del-highlight: #fdb8c0;
+    --add-background: #e6ffed;
+    --add-highlight: #acf2bd;
+    --dif-background: aliceblue;
+    --dif-highlight: var(--lighter-color);
+    --dif-selected-background: #fff2e1;
+    --dif-selected-highlight: #ffd394;
+  
+    --del-place-holder-color: lightgrey;
+    --add-place-holder-color: lightgrey;
+}
+
+.outer {
+    height: 100%;
+    /* display: flex; */
+    /* flex-flow: column; */
+}
+/* 
+.content {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.contentinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+} */
+
+.spincontainer {
+    width: 100%;
+    height: calc(100% - 100px);
+}
+
+/* .column {
+    float: left;
+    padding: 10px;
+} */
+
+.left {
+    width: 75%;
+    height: calc(100% - 100px);
+    overflow: scroll;
+    padding-top: 0px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.right {
+    width: 25%;
+    height: calc(100% - 100px);
+    overflow: scroll;
+    padding-top: 0px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+mat-icon {
+    font-family: 'Material Icons' !important;
+}
+
+mat-list {
+    padding-top: 0 !important;
+}
+
+mat-list-item:nth-child(odd) {
+    background-color: #ccebff;
+}
+
+mat-list-item {
+    height: auto !important;
+}
+
+.nav mat-icon{
+    font-size: 60px;
+    height: auto;
+    width: 60px;
+    line-height: 60px;
+    float: left;
+    margin: 20px;
+}
+
+.nav {
+    width: 100%;
+    position: fixed;
+    top: 0; 
+    height: auto;
+    line-height: 100px;
+    background: rgb(0, 153, 255);
+    font-family: Lato, sans-serif;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    z-index: 3;
+}
+
+.rulechoices {
+    margin-top: 100px;
+    margin-bottom: 10px; 
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom:15px;
+}
+
+.ruleoption {
+    margin:10px auto; 
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom:15px;
+}
+
+.ruleoption span {
+    font-size: 32px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.rulechoices span {
+    font-size: 32px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.nav h1 {
+    margin: 19px 5px;
+}
+
+h1 {
+    margin-left: 5px;
+    font-size: 48px;
+    color: #fff;
+}
+
+.nav button.mat-raised-button {
+    line-height: 25px;
+    background-color: white;
+    color: rgb(0, 153, 255) !important;
+    font-size: 25px;
+    font-weight: bold;
+    float: right;
+    /* margin-left: auto; */
+    margin-right: 45px;
+}
+
+.stat {
+    text-align: center;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+span.stattimes {
+    color: rgb(19, 167, 0);
+    font-weight: bold;
+}
+
+span.statevent {
+    color: rgb(0, 153, 255);
+    font-weight: bold;
+}
+
+button.mat-raised-button {
+    /* display: block; */
+    margin: auto 0;
+    text-align: center;
+    background-color: rgb(0, 153, 255);
+    color: #ffffff;
+    padding: 8px 28px 8px 28px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+button.currentrule {
+    line-height: 25px;
+    text-align: center;
+    float: right;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-left: auto;
+    padding: 8px 28px 8px 28px;
+    text-decoration: underline;
+}
+
+button.mat-raised-button:hover{
+    background-color: #008ae6;
+}
+
+.back {
+    float: left;
+    margin-left: 30px;
+    font-size: 30px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button.addnew {
+    margin: 16px 0 16px 30px;
+}
+
+.addnew mat-icon {
+    top: -5px;
+    left: 1px;
+    position: relative;
+    font-size: 30px;
+}
+
+.container, div.newrule, div.newrule button {
+    z-index: 999 !important;
+}
+
+div.title {
+    float: left;
+}
+
+div.title h1 {
+    margin: 10px 40px;
+    text-align: left;
+}
+
+div.newrule {
+    width: 10%;
+    float: right;
+}
+
+.rule-display {
+    padding: 10px 0 10px 0px;
+    display: inline-block;
+}
+
+/* .rule-blocks {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.rule-block {
+    padding: 5px;
+} */
+
+/* div.rule-word, div.rule-icon {
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    font-size: 24px;
+} */
+
+/* .rule-icon {
+    margin-left: 10px;
+    padding: 0 2px 4px 2px;
+}
+
+.rule-icon mat-icon {
+    position: relative;
+    top: 4px;
+    color: #000000;
+} */
+
+div.underneath {
+    display: inline-block;
+    font-size: 22px;
+    text-align: center;
+    color: #000000;
+}
+
+.rule-manage {
+    margin: 0 20px 0 auto;
+    display: flex;
+}
+
+.rule-manage mat-icon {
+    cursor: pointer;
+    font-size: 35px;
+    position: relative;
+    top: -4px;
+    padding: 0 25px;
+    color:  #000000;
+}
+
+.rule-manage button.mat-raised-button {
+    line-height: 15px;
+}
+
+button.savedbutton {
+    background-color: gray;
+}
+
+.showhide {
+    cursor: pointer;
+    color: brown;
+    text-decoration: underline;
+}
+
+.spinnerrow {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.helptext {
+    font-size: 24px;
+    text-align: center;
+}
+
+.helptext-spinner {
+    margin: 20px auto;
+}
+
+.btn-show-alter {
+    background-color: white;
+    color: rgb(0, 153, 255);
+    border: none;
+    width: 100%;
+    text-align: end;
+}
+
+.btn-show-alter:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.rule-table {
+    border: none;
+    text-align: left;
+    /* margin-left: 10px; */
+    padding-left: 26px;
+}
+
+.rule-content {
+    font-size: 20px;
+}
+
+.rule-content-add {
+    font-size: 20px;
+    /* text-decoration: underline; */
+    background-color: #E6FFED;
+}
+
+.rule-content-del {
+    font-size: 20px;
+    /* text-decoration: line-through; */
+    background-color: #FFEEF0;
+}
+
+.rule-word {
+    width: 120px;
+    font-size: 24px;
+    color: rgb(0, 153, 255);
+    font-weight: bold;
+    height: 1em;
+}
+
+.rule-word-del {
+    width: 100px;
+    font-size: 24px;
+    color: rgb(0, 153, 255);
+    font-weight: bold;
+    height: 1em;
+    background-color: #FFDCE0;
+}
+
+.rule-word-add {
+    width: 100px;
+    font-size: 24px;
+    color: rgb(0, 153, 255);
+    font-weight: bold;
+    height: 1em;
+    background-color: #CDFFD8;
+}
+
+.row {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+.row>.column {
+    width: 50%;
+    display: table-cell;
+    height: 100%;
+    vertical-align:top;
+}
+
+.row div.patchtitle {
+    text-align: center;
+    color: white;
+    background-color: darkgray;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.border-right {
+    border-right: 10px solid var(--list-border-color) !important;
+}
+
+.if-while-then {
+    background: aliceblue;
+    border-bottom: 3px solid var(--list-border-color);
+    padding: 3px 16px 5px 6px;
+    display: block;
+    height: 100%;
+}
+
+.rule-blocks,
+div.del-rule-blocks,
+div.add-rule-blocks,
+div.change-add-rule-blocks,
+div.change-del-rule-blocks {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.tap {
+    width: 90%;
+    padding: 2px;
+}
+
+div.rule-block {
+    padding: 2px;
+    display: inline-block;
+    width: 32%;
+    /* 33% width makes resizing weird -- causes "then..." to go onto new line */
+}
+
+div.rule-word,
+div.del-rule-word,
+div.add-rule-word,
+div.rule-icon,
+div.del-rule-icon,
+div.add-rule-icon,
+div.blank-del-rule-word,
+div.blank-del-rule-icon {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    font-size: 18px;
+}
+
+div.del-rule-blocks {
+    background: transparent;
+    font-weight: 900;
+}
+
+div.add-rule-blocks {
+    background: transparent;
+    font-weight: 900;
+}
+
+div.add-rule-block,
+div.del-rule-block {
+    width: 100%;
+    display: inline-block;
+    font-weight: 900;
+}
+
+div.add-rule-block {
+    background-color: var(--add-highlight);
+}
+
+div.del-rule-block {
+    background-color: var(--del-highlight);
+}
+
+div.tiny-and {
+    text-align:center;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.add-remove-tags {
+    position: relative;
+    top: 0px;
+    font-size: 28px;
+    width: 10%;
+    text-align: center;
+}
+
+.sdiff-item .column {
+    border-bottom: thin solid var(--list-border-color);
+}
+  
+.sdiff-item:last-child .column {
+    border-bottom: none;
+}
+
+.del-rule-display,
+.add-rule-display,
+.rule-display,
+.mod-rule-display,
+.change-rule-display,
+.del-rule-placeholder-display,
+.add-rule-placeholder-display {
+    padding: 3px 16px 5px 6px;
+    display: block;
+    height: 100%;
+}
+
+.del-rule-display {
+    background-color: var(--del-background);
+}
+
+.del-rule-placeholder-display {
+    background-image: repeating-linear-gradient(-45deg, #eee, #eee 12px, #fafafa 15px, #fafafa 27px);
+}
+
+.add-rule-display {
+    background-color: var(--add-background);
+}
+
+.add-rule-placeholder-display {
+    background-image: repeating-linear-gradient(-45deg, #eee, #eee 12px, #fafafa 15px, #fafafa 27px);
+}
+
+.mod-rule-display {
+    background-color: var(--mod-background);
+}
+
+.rule-display:hover {
+    background-color: var(--lighter-color);
+}
+
+.mod-rule-display:hover,
+.change-rule-display:hover {
+    background: antiquewhite;
+}
+
+.del-rule-display:hover {
+    background: lightcoral;
+}
+
+.add-rule-display:hover {
+    background: lightgreen;
+}
+
+div.underneath,
+div.add-underneath,
+div.del-underneath,
+div.mod-underneath {
+    display: inline-block;
+    font-size: 20px;
+    text-align: left;
+    flex-wrap: wrap;
+    width: 80%;
+    vertical-align: text-top;
+}
+
+div.underneath.key,
+div.del-underneath.key,
+div.add-underneath.key,
+div.mod-underneath.key {
+    text-align: left;
+    width: auto;
+    vertical-align: baseline;
+}
+
+div.del-underneath.key {
+    padding-right: 0.2em;
+    font-weight: 900;
+    background-color: var(--del-highlight)
+}
+
+div.add-underneath.key {
+    padding-left: 0.2em;
+    font-weight: 900;
+    background-color: var(--add-highlight)
+}
+
+div.mod-underneath.key {
+    padding-left: 0.2em;
+    font-weight: 900;
+    background-color: var(--mod-highlight)
+}
+
+.dev-cap-meta {
+    font-size: large;
+    white-space: pre-line;
+}
+
+div.outer-patch-desc {
+    margin-top: 2em;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+div.patch-desc-title {
+    text-align: left;
+    font-size: 28px;
+}
+
+div.patch-desc {
+    padding-left: 4em;
+    text-align: left;
+    font-size: 20px;
+}
+
+span.zone-name {
+    display: inline-block;
+    padding: 0 10px;
+    height: 25px;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    font-weight: bold;
+    color: #454545;
+    margin: 0 5px;
+}

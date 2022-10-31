@@ -1,0 +1,337 @@
+<div class="outer">
+  <div class="nav">
+    <div class="back" (click)="this._location.back()">←</div>
+    <mat-icon>assignment</mat-icon>
+    <div class="title">
+      <h1>Action: {{getCurrentCommandText()}}</h1>
+    </div>
+    <div class="newrule">
+    </div> 
+    <!-- <button mat-button class="currentrule" (click)="openDialog()">Show Current Rules</button>
+    <button mat-raised-button (click)="finishAdding()">Finish</button> -->
+    <button mat-button class="currentrule" *ngIf="this.rsiService.mode == 'nf'" (click)="checkAlternative()">I'm not happy with any of these.</button>
+  </div>
+
+  <div class="spincontainer" *ngIf="showSpinner">
+    <div class="spinnerrow align-items-center justify-content-center h-100">
+      <div class="col-6">
+        <mat-spinner class="helptext-spinner"></mat-spinner>
+        <div class="helptext">It might take several minutes to render suggestions.</div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="!showSpinner">
+    <div>
+      <div class="rulechoices">
+        <span>We suggested the following fixes: </span>
+        <button mat-raised-button class="navi" (click)="gotoPrev()">Prev</button>
+        <span>Suggested Fix {{currentCluster+1}}/{{clusterNum}}</span>
+        <button mat-raised-button class="navi" (click)="gotoNext()">Next</button>
+      </div>
+
+      <div class="ruleoption">
+        <span>{{clusterDescription}}</span>
+      </div>
+
+      <!-- <mat-list>
+        <mat-list-item class="rule-display" *ngFor="let rule of RULES; let i = index">
+          <div class="rule-blocks">
+            <table class="rule-table">
+              <tr class="rule-table" *ngFor="let word of rule.words; let i = index">
+                <td class="rule-word rule-table" *ngIf="rule.modes[i] == 0">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+                <td class="rule-word-del rule-table" *ngIf="rule.modes[i] == 1">- {{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+                <td class="rule-word-add rule-table" *ngIf="rule.modes[i] == 2">+ {{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+                <td class="rule-content rule-table" *ngIf="rule.modes[i] == 0">{{rule.descriptions[i]}}</td>
+                <td class="rule-content-del rule-table" *ngIf="rule.modes[i] == 1">{{rule.descriptions[i]}}</td>
+                <td class="rule-content-add rule-table" *ngIf="rule.modes[i] == 2">{{rule.descriptions[i]}}</td>
+              </tr>
+            </table>
+          </div>
+        </mat-list-item>
+      </mat-list> -->
+
+    </div>
+  </div>
+
+  <div id="entireprgm">
+    <div class="row" *ngIf="!showSpinner">
+      <div class="column border-right patchtitle">Original</div>
+      <div class="column patchtitle">Modified</div>
+    </div>
+
+    <div class="row" *ngIf="!showSpinner">
+      <div id="prgmkey" class="column border-right if-while-then">
+        <div class="rule-blocks">
+          <mat-icon class='add-remove-tags'></mat-icon>
+          <div class="tap">
+            <div class='rule-block' style="font-size:40px">
+              If...
+            </div>
+            <div class='rule-block' style="font-size:40px">
+              while...
+            </div>
+            <div class='rule-block' style="font-size:40px">
+              then...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column if-while-then">
+        <div class="rule-blocks">
+          <mat-icon class='add-remove-tags'></mat-icon>
+          <div class="tap">
+            <div class='rule-block' style="font-size:40px">
+              If...
+            </div>
+            <div class='rule-block' style="font-size:40px">
+              while...
+            </div>
+            <div class='rule-block' style="font-size:40px">
+              then...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="actualprgm" class="row sdiff-item" *ngFor="let rulePair of PROGRAM_TABLE">
+      <!-- ================================= LEFT ======================================= -->
+      <div id="leftprgm" class="column border-right" *ngIf="rulePair.left; let rule">
+        <div *ngIf="rule.status==-1" class='del-rule-display'>
+          <div class="del-rule-blocks">
+            <mat-icon class='add-remove-tags'>remove</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div class="del-rule-icon">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="del-underneath">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="rule.status==0" class='rule-display'>
+          <div class="rule-blocks">
+            <mat-icon class='add-remove-tags' style="visibility:hidden">add</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div class="rule-icon">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="underneath">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Placeholders for added rules (those in PROGRAM_2 but not in PROGRAM_1) -->
+        <div *ngIf="rule.status==101" class='add-rule-placeholder-display'>
+          <div class="rule-blocks" style="visibility:hidden">
+            <mat-icon class='add-remove-tags' style="visibility:hidden">add</mat-icon>
+            <div class="tap" style="visibility:hidden">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block" style="visibility:hidden">
+                <div class="rule-icon" style="visibility:hidden">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="underneath" style="visibility:hidden">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="rule.status==21" class='del-rule-display'>
+          <div class="change-del-rule-blocks">
+            <mat-icon class='add-remove-tags'>remove</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div *ngIf="rule.statuses[i]==-1">
+                  <div class='del-rule-block'>
+                    <div class="del-rule-icon">
+                      <mat-icon>{{rule.icons[i]}}</mat-icon>
+                    </div>
+                    <div class="del-underneath">
+                      <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                        <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                        <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="rule.statuses[i]==0">
+                  <div class="rule-icon">
+                    <mat-icon>{{rule.icons[i]}}</mat-icon>
+                  </div>
+                  <div class="underneath">
+                    <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                      <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                      <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="rule.statuses[i]==1">
+                  <div class="add-rule-icon">
+                    <mat-icon>{{rule.icons[i]}}</mat-icon>
+                  </div>
+                  <div class="add-underneath">
+                    <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                      <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                      <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ================================= RIGHT ======================================= -->
+      <div id="rightprgm" class="column" *ngIf="rulePair.right; let rule">
+        <div *ngIf="rule.status==102" class='del-rule-placeholder-display'>
+          <div class="rule-blocks" style="visibility:hidden">
+            <mat-icon class='add-remove-tags' style="visibility:hidden">add</mat-icon>
+            <div class="tap" style="visibility:hidden">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block" style="visibility:hidden">
+                <div class="rule-icon" style="visibility:hidden">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="underneath" style="visibility:hidden">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="rule.status==0" class='rule-display'>
+          <div class="rule-blocks">
+            <mat-icon class='add-remove-tags' style="visibility:hidden">add</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div class="rule-icon">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="underneath" [matTooltip]="devCapMetas[rule.devCapIds[i]]" matTooltipClass="dev-cap-meta">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="rule.status==1" class='add-rule-display'>
+          <div class="add-rule-blocks">
+            <mat-icon class='add-remove-tags'>add</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div class="add-rule-icon">
+                  <mat-icon>{{rule.icons[i]}}</mat-icon>
+                </div>
+                <div class="add-underneath" [matTooltip]="devCapMetas[rule.devCapIds[i]]" [matTooltipClass]="'dev-cap-meta'">
+                  <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                    <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                    <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="rule.status==22" class='add-rule-display'>
+          <div class="change-add-rule-blocks">
+            <mat-icon class='add-remove-tags'>add</mat-icon>
+            <div class="tap">
+              <div *ngFor="let word of rule.words; let i = index" class="rule-block">
+                <div *ngIf="i > 2 && rule.descriptions[i] != ''" class="tiny-and">and</div>
+                <div *ngIf="i < 2"></div>
+                <div *ngIf="rule.statuses[i]==-1">
+                  <div class="del-rule-icon">
+                    <mat-icon>{{rule.icons[i]}}</mat-icon>
+                  </div>
+                  <div class="del-underneath" [matTooltip]="devCapMetas[rule.devCapIds[i]]" [matTooltipClass]="'dev-cap-meta'">
+                    <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                      <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                      <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="rule.statuses[i]==0">
+                  <div class="rule-icon">
+                    <mat-icon>{{rule.icons[i]}}</mat-icon>
+                  </div>
+                  <div class="underneath" [matTooltip]="devCapMetas[rule.devCapIds[i]]" [matTooltipClass]="'dev-cap-meta'">
+                    <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                      <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                      <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+                <div *ngIf="rule.statuses[i]==1">
+                  <div class="add-rule-block">
+                    <div class="add-rule-icon">
+                      <mat-icon>{{rule.icons[i]}}</mat-icon>
+                    </div>
+                    <div class="add-underneath" [matTooltip]="devCapMetas[rule.devCapIds[i]]" [matTooltipClass]="'dev-cap-meta'">
+                      <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                        <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                        <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div [hidden]="logFetched">
+    <div class="row align-items-center justify-content-center h-100">
+      <div class="col-4">
+        <mat-spinner class="helptext-spinner"></mat-spinner>
+        <div class="helptext">Rendering visualization...</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- trace visualization -->
+  <div [hidden]="!logFetched">
+    <div class="ruleoption"><span>Stats and Visualization</span></div>
+    <template #viscontainer></template>
+  </div>
+
+  <!-- <div class="outer-patch-desc" *ngIf="!showSpinner">
+    <div class="patch-desc-title">{{patchMetaDescriptions[0]}}</div>
+    <div class="patch-desc" *ngFor="let desc of patchMetaDescriptions.slice(1)">
+      {{desc}}
+    </div>
+  </div> -->
+</div>

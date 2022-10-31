@@ -1,0 +1,130 @@
+<div class="nav">
+  <div class="back" (click)="this._location.back()">←</div>
+  <mat-icon>assignment</mat-icon>
+  <div class="title">
+    <h1>Which parts of rules need to be changed?</h1>
+  </div>
+  <div class="newrule">
+  </div>
+  <!-- <button mat-button class="currentrule" (click)="openDialog()">Show Current Rules</button> -->
+  <!-- <button mat-raised-button (click)="finishFeedback()">Finish<mat-icon class="add-icon">done</mat-icon></button> -->
+</div>
+
+<div class="ruleoption">
+  <span>Use the buttons to identify parts to modify</span>
+  <!-- <div [innerHTML]="&quot;a becomes 05:30 am&quot; | highlight:&quot;05:30&quot;"></div> -->
+</div>
+
+<mat-list *ngIf="finishParsing">
+  <mat-list-item class="rule-display" *ngFor="let rule of RULES; let rule_i = index">
+    <div class="rule-blocks">
+      <table class="rule-table">
+        <tr class="rule-table" *ngFor="let word of rule.words.slice(0, rule.words.length-1); let i = index">
+          <td class="rule-word rule-table">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+          <td class="rule-content rule-table">
+            <ng-container *ngIf="i!=rule.words.length-1">
+              <!-- <span class="can-modify" *ngIf="!ruleConditionModified(rule_i, i)" (click)="modifyCondition($event, rule_i, i)">
+                <ng-container *ngIf="rule.has_numeric[i]">
+                  <div [outerHTML]="rule.descriptions[i] | highlight: rule.has_numeric[i]: ruleConditionValueModified(rule_i, i)"></div>
+                </ng-container>
+                <ng-container *ngIf="!rule.has_numeric[i]">
+                  {{rule.descriptions[i]}}
+                  
+                </ng-container>
+              </span>
+              <span class="can-modify modified" *ngIf="ruleConditionModified(rule_i, i)" (click)="modifyCondition($event, rule_i, i)">
+                <ng-container *ngIf="rule.has_numeric[i]">
+                  <div [outerHTML]="rule.descriptions[i] | highlight: rule.has_numeric[i]: ruleConditionValueModified(rule_i, i)"></div>
+                </ng-container>
+                <ng-container *ngIf="!rule.has_numeric[i]">
+                  {{rule.descriptions[i]}}
+                </ng-container>
+              </span>
+              <mat-form-field class="modify-cond-sel">
+                <mat-label>Click me to modify</mat-label>
+                <mat-select>
+                  <mat-option>
+                    aaa
+                  </mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <ng-container *ngFor="let styledTxt of (modifyStatus | modifywords: rule_i: i: RULES)">
+                <span class="modified" *ngIf="styledTxt[0]=='highlight'">{{styledTxt[1]}}</span>
+                <span *ngIf="styledTxt[0]=='regular'">{{styledTxt[1]}}</span>
+                <ng-container *ngIf="styledTxt[0]=='location'"><span class="zone-name">{{styledTxt[1]}}</span></ng-container>
+              </ng-container>
+              <button mat-raised-button class="btn-add-new" [matMenuTriggerFor]="modifycond" *ngIf="!rule.has_numeric[i]" (click)="prepareModifyCondition(rule_i, i)">Modify the statement</button>
+              <button mat-raised-button class="btn-add-new" [matMenuTriggerFor]="modifycondwithval" *ngIf="rule.has_numeric[i]" (click)="prepareModifyCondition(rule_i, i)">Modify the statement</button>
+              <button mat-raised-button class="btn-add-new" *ngIf="i == rule.words.length-2 && !ruleConditionAdded(rule_i)" (click)="addCondition(rule_i)" (mouseover)="mouseOverAddingCondition(rule_i)" (mouseout)="mouseOutAddingCondition(rule_i)">
+                Add a new constraint to the rule
+              </button>
+            </ng-container>
+            <span *ngIf="i == rule.words.length-1">
+              <ng-container *ngFor="let desc of rule.enhancedDesc[i]">
+                <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+              </ng-container>
+            </span>
+            <!-- <ng-container *ngIf="i == rule.words.length-2 && ruleConditionAdded(rule_i)">
+              <span class="modified">WHILE new condition</span>
+            </ng-container> -->
+          </td>
+        </tr>
+        <tr class="rule-table" *ngIf="modifyStatus.rules[rule_i].new_use_temp ? modifyStatus.rules[rule_i].new_cond_temp : modifyStatus.rules[rule_i].new_cond">
+          <td class="rule-word rule-table">{{rule.words.length <= 2 ? "while" : "and"}}</td>
+          <td class="rule-content rule-table">
+            <span class="modified">new condition</span>
+          </td>
+        </tr>
+        <tr class="rule-table">
+          <td class="rule-word rule-table">{{rule.words[rule.words.length-1]}}</td>
+          <td class="rule-content rule-table">
+            <span>
+              <ng-container *ngFor="let desc of rule.enhancedDesc[rule.descriptions.length-1]">
+                <ng-container *ngIf="desc[0]=='location'"><span class="zone-name">{{desc[1]}}</span></ng-container>
+                <ng-container *ngIf="desc[0]==''">{{desc[1]}}</ng-container>
+              </ng-container>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </mat-list-item>
+  <mat-list-item class="rule-display" *ngIf="modifyStatus.new_use_temp ? modifyStatus.new_rule_temp : modifyStatus.new_rule">
+    <div class="rule-blocks">
+      <table class="rule-table">
+        <tr class="rule-table">
+          <td class="rule-word rule-table">If</td>
+          <td class="rule-content rule-table"><span class="modified">new trigger</span></td>
+        </tr>
+        <tr class="rule-table">
+          <td class="rule-word rule-table">while</td>
+          <td class="rule-content rule-table"><span class="modified">new conditions</span></td>
+        </tr>
+        <tr class="rule-table">
+          <td class="rule-word rule-table">then</td>
+          <td class="rule-content rule-table"><span class="modified">{{commandStatement}}</span></td>
+        </tr>
+      </table>
+    </div>
+  </mat-list-item>
+  <div class="add-new-rule">
+    <button mat-raised-button class="btn-add-new btn-add-rule" *ngIf="!modifyStatus.new_rule" (click)="addNewRule()">New rule needed +</button>
+    <!-- <button mat-raised-button class="btn-add-new btn-add-rule modified" *ngIf="newRuleAdded()" (click)="addNewRule()">New rule needed +</button> -->
+  </div>
+  
+</mat-list>
+
+<div class="finish">
+  <button mat-raised-button class='addnew' style='display: inline-block;' (click)="clear()">Clear<mat-icon class="add-icon">clear_all</mat-icon></button>
+  <button mat-raised-button (click)="finishFeedback()">Finish<mat-icon class="add-icon">done</mat-icon></button>
+</div>
+
+<mat-menu #modifycond="matMenu">
+  <button mat-menu-item (mouseover)="mouseOverModifyMenu(false)" (mouseout)="mouseOutModifyMenu()" (click)="modifyCondition(false)">Whole statement</button>
+</mat-menu>
+
+<mat-menu #modifycondwithval="matMenu">
+  <button mat-menu-item (mouseover)="mouseOverModifyMenu(false)" (mouseout)="mouseOutModifyMenu()" (click)="modifyCondition(false)">Whole statement</button>
+  <button mat-menu-item (mouseover)="mouseOverModifyMenu(true)" (mouseout)="mouseOutModifyMenu()" (click)="modifyCondition(true)">Only the value "{{this.rsiService.currentConditionValue}}"</button>
+</mat-menu>

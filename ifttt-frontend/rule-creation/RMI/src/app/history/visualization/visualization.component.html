@@ -1,0 +1,70 @@
+<div class="nav">
+  <div class="back" (click)="goToDashboard()">←</div>
+  <mat-icon>assignment</mat-icon>
+  <div class="title">
+    <h1>Please select capabilities and define time range</h1>
+  </div>
+  <div class="newrule">
+  </div> 
+</div>
+
+<!-- <ng-container *ngIf="finish">
+  <div class="ruleoption">
+    <button mat-raised-button class="navi" (click)="gotoPrev()">Prev</button>
+    <span>Checkpoint {{currentPatchId}}/{{rulePatches.length}}</span>
+    <button mat-raised-button class="navi" (click)="gotoNext()">Next</button>
+    <br>
+    <span>All your rules at {{ currentPatchId?(rulePatches[currentPatchId-1]['time'] | date: 'full'):"Initial" }}</span>
+  </div>
+  
+  <mat-list>
+    <mat-list-item class="rule-display" *ngFor="let rule of RULES; let i = index">
+      <div class="rule-blocks">
+        <table class="rule-table">
+          <tr class="rule-table" *ngFor="let word of rule.words; let i = index">
+            <td class="rule-word rule-table">{{rule.words[i] == "and"? "" :rule.words[i]}}</td>
+            <td class="rule-content rule-table">{{rule.descriptions[i]}}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</ng-container> -->
+
+<div class="container">
+  <div class="row align-items-center justify-content-center h-100" *ngIf="showSpinner">
+      <div class="col-3">
+          <mat-spinner></mat-spinner>
+      </div>
+  </div>
+  <div *ngIf="!showSpinner">
+    <h2>Please select the capabilities to show in the visualization</h2>
+    <ul>
+        <ng-container *ngFor="let dev of devices; let d_i = index">
+            <ng-container *ngFor="let cap of dev.capabilities; let c_i = index">
+                <ng-container *ngFor="let param of cap.parameters; let p_i = index">
+                    <li>
+                        <mat-checkbox [(ngModel)]="selection[d_i][c_i][p_i]">
+                            ({{dev.label}}) {{cap.name}}: {{param.name}}
+                        </mat-checkbox>
+                    </li>
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </ul>
+    <h2>Please input the time range</h2>
+    <ul>
+        <li>
+            From:
+            <input matInput type="date" [(ngModel)]="start_date">
+            <input matInput type="time" [(ngModel)]="start_time">
+        </li>
+        <li>
+            To:
+            <input matInput type="date" [(ngModel)]="end_date">
+            <input matInput type="time" [(ngModel)]="end_time">
+        </li>
+    </ul>
+    <button mat-raised-button (click)="submit()">Show visualization</button>
+  </div>
+</div>
